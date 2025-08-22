@@ -1,12 +1,12 @@
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.*;
+import java.util.ArrayList;
 
 public class Jay {
     public static void main(String[] args) throws JayException {
         Scanner scanner = new Scanner(System.in);
-        Task[] tasks = new Task[100];
-        int count = 0;
+        ArrayList<Task> tasks = new ArrayList<>();
         Matcher m;
 
         System.out.println("\t____________________________________________________________");
@@ -31,27 +31,56 @@ public class Jay {
                     case "list":
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Here are the tasks in your list:");
-                        for (int i = 0; i < count; i++) {
-                            System.out.println("\t " + (i + 1) + ". " + tasks[i]);
+                        for (int i = 0; i < tasks.size(); i++) {
+                            System.out.println("\t " + (i + 1) + ". " + tasks.get(i));
                         }
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
                     case "mark":
+                        if (!argument.matches("\\d+")) {
+                            throw new JayParseArgumentException("Error: not a task number!");
+                        }
                         int markIndex = Integer.parseInt(argument) - 1;
-                        tasks[markIndex].markAsDone();
+                        if (markIndex < 0 || markIndex >= tasks.size()) {
+                            throw new JayParseArgumentException("Error: invalid task number!");
+                        }
+                        tasks.get(markIndex).markAsDone();
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Nice! I've marked this task as done:");
-                        System.out.println("\t " + tasks[markIndex]);
+                        System.out.println("\t " + tasks.get(markIndex));
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
                     case "unmark":
+                        if (!argument.matches("\\d+")) {
+                            throw new JayParseArgumentException("Error: not a task number!");
+                        }
                         int unmarkIndex = Integer.parseInt(argument) - 1;
-                        tasks[unmarkIndex].unmarkAsDone();
+                        if (unmarkIndex < 0 || unmarkIndex >= tasks.size()) {
+                            throw new JayParseArgumentException("Error: invalid task number!");
+                        }
+                        tasks.get(unmarkIndex).unmarkAsDone();
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t OK, I've marked this task as not done yet:");
-                        System.out.println("\t " + tasks[unmarkIndex]);
+                        System.out.println("\t " + tasks.get(unmarkIndex));
+                        System.out.println("\t____________________________________________________________\n");
+                        break;
+
+                    case "delete":
+                        if (!argument.matches("\\d+")) {
+                            throw new JayParseArgumentException("Error: not a task number!");
+                        }
+                        int delIndex = Integer.parseInt(argument) - 1;
+                        if (delIndex < 0 || delIndex >= tasks.size()) {
+                            throw new JayParseArgumentException("Error: invalid task number!");
+                        }
+                        Task removed = tasks.remove(delIndex);
+
+                        System.out.println("\t____________________________________________________________");
+                        System.out.println("\t Noted. I've removed this task:");
+                        System.out.println("\t   " + removed);
+                        System.out.println("\t Now you have " + tasks.size() + " tasks in the list.");
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
@@ -59,11 +88,11 @@ public class Jay {
                         if (Objects.equals(argument, "")) {
                             throw new JayParseArgumentException("Error: empty description for Todo!");
                         }
-                        tasks[count++] = new Todo(argument);
+                        tasks.add(new Todo(argument));
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Got it. I've added this task:");
-                        System.out.println("\t   " + tasks[count - 1]);
-                        System.out.println("\t Now you have " + count + " tasks in the list.");
+                        System.out.println("\t   " + tasks.getLast());
+                        System.out.println("\t Now you have " + tasks.size() + " tasks in the list.");
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
@@ -73,16 +102,14 @@ public class Jay {
                         if (!m.matches()) {
                             throw new JayParseArgumentException("Error: invalid format for Deadline!");
                         }
-
-                        tasks[count++] = new Deadline(
+                        tasks.add(new Deadline(
                                 m.group("desc").trim(),
                                 m.group("by").trim()
-                        );
-
+                        ));
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Got it. I've added this task:");
-                        System.out.println("\t   " + tasks[count - 1]);
-                        System.out.println("\t Now you have " + count + " tasks in the list.");
+                        System.out.println("\t   " + tasks.getLast());
+                        System.out.println("\t Now you have " + tasks.size() + " tasks in the list.");
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
@@ -92,17 +119,15 @@ public class Jay {
                         if (!m.matches()) {
                             throw new JayParseArgumentException("Error: invalid format for Event!");
                         }
-
-                        tasks[count++] = new Event(
+                        tasks.add(new Event(
                                 m.group("desc").trim(),
                                 m.group("from").trim(),
                                 m.group("to").trim()
-                        );
-
+                        ));
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Got it. I've added this task:");
-                        System.out.println("\t   " + tasks[count - 1]);
-                        System.out.println("\t Now you have " + count + " tasks in the list.");
+                        System.out.println("\t   " + tasks.getLast());
+                        System.out.println("\t Now you have " + tasks.size() + " tasks in the list.");
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
@@ -114,7 +139,6 @@ public class Jay {
                 System.out.println("\t " + e.toString());
                 System.out.println("\t____________________________________________________________\n");
             }
-
         }
     }
 }
