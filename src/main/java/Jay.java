@@ -4,6 +4,18 @@ import java.util.regex.*;
 import java.util.ArrayList;
 
 public class Jay {
+    public enum Command {
+        BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT;
+
+        static Command parse(String raw) throws JayException {
+            try {
+                return Command.valueOf(raw.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new JayInvalidCommandException("Error: invalid command!");
+            }
+        }
+    }
+
     public static void main(String[] args) throws JayException {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Task> tasks = new ArrayList<>();
@@ -17,18 +29,19 @@ public class Jay {
         while (true) {
             String input = scanner.nextLine();
             String[] words = input.split("\\s+", 2);
-            String command = words[0];
+            String rawCommand = words[0];
             String argument = (words.length > 1) ? words[1] : "";
 
             try {
+                Command command = Command.parse(rawCommand);
                 switch (command) {
-                    case "bye":
+                    case BYE:
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Bye. Hope to see you again soon!");
                         System.out.println("\t____________________________________________________________\n");
                         return;
 
-                    case "list":
+                    case LIST:
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Here are the tasks in your list:");
                         for (int i = 0; i < tasks.size(); i++) {
@@ -37,7 +50,7 @@ public class Jay {
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
-                    case "mark":
+                    case MARK:
                         if (!argument.matches("\\d+")) {
                             throw new JayParseArgumentException("Error: not a task number!");
                         }
@@ -52,7 +65,7 @@ public class Jay {
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
-                    case "unmark":
+                    case UNMARK:
                         if (!argument.matches("\\d+")) {
                             throw new JayParseArgumentException("Error: not a task number!");
                         }
@@ -67,7 +80,7 @@ public class Jay {
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
-                    case "delete":
+                    case DELETE:
                         if (!argument.matches("\\d+")) {
                             throw new JayParseArgumentException("Error: not a task number!");
                         }
@@ -84,7 +97,7 @@ public class Jay {
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
-                    case "todo":
+                    case TODO:
                         if (Objects.equals(argument, "")) {
                             throw new JayParseArgumentException("Error: empty description for Todo!");
                         }
@@ -96,7 +109,7 @@ public class Jay {
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
-                    case "deadline":
+                    case DEADLINE:
                         Pattern deadlinePattern = Pattern.compile("^(?<desc>.+?)\\s*/by\\s+(?<by>.+)$");
                         m = deadlinePattern.matcher(argument);
                         if (!m.matches()) {
@@ -113,7 +126,7 @@ public class Jay {
                         System.out.println("\t____________________________________________________________\n");
                         break;
 
-                    case "event":
+                    case EVENT:
                         Pattern eventPattern = Pattern.compile("^(?<desc>.+?)\\s*/from\\s+(?<from>.+?)\\s*/to\\s+(?<to>.+)$");
                         m = eventPattern.matcher(argument);
                         if (!m.matches()) {
@@ -130,9 +143,6 @@ public class Jay {
                         System.out.println("\t Now you have " + tasks.size() + " tasks in the list.");
                         System.out.println("\t____________________________________________________________\n");
                         break;
-
-                    default:
-                        throw new JayInvalidCommandException("Error: invalid command!");
                 }
             } catch (JayException e) {
                 System.out.println("\t____________________________________________________________");
