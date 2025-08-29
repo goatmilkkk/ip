@@ -17,8 +17,9 @@ public class Jay {
     }
 
     public static void main(String[] args) throws JayException {
+        Storage storage = new Storage();
+        ArrayList<Task> tasks = storage.load();
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
         Matcher m;
 
         System.out.println("\t____________________________________________________________");
@@ -52,13 +53,14 @@ public class Jay {
 
                     case MARK:
                         if (!argument.matches("\\d+")) {
-                            throw new JayParseArgumentException("Error: not a task number!");
+                            throw new JayParseException("Error: not a task number!");
                         }
                         int markIndex = Integer.parseInt(argument) - 1;
                         if (markIndex < 0 || markIndex >= tasks.size()) {
-                            throw new JayParseArgumentException("Error: invalid task number!");
+                            throw new JayParseException("Error: invalid task number!");
                         }
                         tasks.get(markIndex).markAsDone();
+                        storage.save(tasks);
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Nice! I've marked this task as done:");
                         System.out.println("\t " + tasks.get(markIndex));
@@ -67,13 +69,14 @@ public class Jay {
 
                     case UNMARK:
                         if (!argument.matches("\\d+")) {
-                            throw new JayParseArgumentException("Error: not a task number!");
+                            throw new JayParseException("Error: not a task number!");
                         }
                         int unmarkIndex = Integer.parseInt(argument) - 1;
                         if (unmarkIndex < 0 || unmarkIndex >= tasks.size()) {
-                            throw new JayParseArgumentException("Error: invalid task number!");
+                            throw new JayParseException("Error: invalid task number!");
                         }
                         tasks.get(unmarkIndex).unmarkAsDone();
+                        storage.save(tasks);
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t OK, I've marked this task as not done yet:");
                         System.out.println("\t " + tasks.get(unmarkIndex));
@@ -82,14 +85,14 @@ public class Jay {
 
                     case DELETE:
                         if (!argument.matches("\\d+")) {
-                            throw new JayParseArgumentException("Error: not a task number!");
+                            throw new JayParseException("Error: not a task number!");
                         }
                         int delIndex = Integer.parseInt(argument) - 1;
                         if (delIndex < 0 || delIndex >= tasks.size()) {
-                            throw new JayParseArgumentException("Error: invalid task number!");
+                            throw new JayParseException("Error: invalid task number!");
                         }
                         Task removed = tasks.remove(delIndex);
-
+                        storage.save(tasks);
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Noted. I've removed this task:");
                         System.out.println("\t   " + removed);
@@ -99,9 +102,10 @@ public class Jay {
 
                     case TODO:
                         if (Objects.equals(argument, "")) {
-                            throw new JayParseArgumentException("Error: empty description for Todo!");
+                            throw new JayParseException("Error: empty description for Todo!");
                         }
                         tasks.add(new Todo(argument));
+                        storage.save(tasks);
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Got it. I've added this task:");
                         System.out.println("\t   " + tasks.getLast());
@@ -113,12 +117,13 @@ public class Jay {
                         Pattern deadlinePattern = Pattern.compile("^(?<desc>.+?)\\s*/by\\s+(?<by>.+)$");
                         m = deadlinePattern.matcher(argument);
                         if (!m.matches()) {
-                            throw new JayParseArgumentException("Error: invalid format for Deadline!");
+                            throw new JayParseException("Error: invalid format for Deadline!");
                         }
                         tasks.add(new Deadline(
                                 m.group("desc").trim(),
                                 m.group("by").trim()
                         ));
+                        storage.save(tasks);
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Got it. I've added this task:");
                         System.out.println("\t   " + tasks.getLast());
@@ -130,13 +135,14 @@ public class Jay {
                         Pattern eventPattern = Pattern.compile("^(?<desc>.+?)\\s*/from\\s+(?<from>.+?)\\s*/to\\s+(?<to>.+)$");
                         m = eventPattern.matcher(argument);
                         if (!m.matches()) {
-                            throw new JayParseArgumentException("Error: invalid format for Event!");
+                            throw new JayParseException("Error: invalid format for Event!");
                         }
                         tasks.add(new Event(
                                 m.group("desc").trim(),
                                 m.group("from").trim(),
                                 m.group("to").trim()
                         ));
+                        storage.save(tasks);
                         System.out.println("\t____________________________________________________________");
                         System.out.println("\t Got it. I've added this task:");
                         System.out.println("\t   " + tasks.getLast());
