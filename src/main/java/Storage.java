@@ -31,7 +31,7 @@ public class Storage {
 
                 // format: TYPE | done | desc | [dates...]
                 String[] parts = line.split("\\s*\\|\\s*", -1);
-                if (parts.length < 3) throw new JayParseException("Error: corrupted save file format.");
+                if (parts.length < 3) throw new JayException("Error: corrupted save file format.");
 
                 char kind = parts[0].trim().isEmpty() ? '?' : parts[0].trim().charAt(0);
                 int done = Integer.parseInt(parts[1].trim());
@@ -44,20 +44,20 @@ public class Storage {
                         break;
                     }
                     case 'D': {
-                        if (parts.length < 4) throw new JayParseException("Error: bad Deadline line.");
+                        if (parts.length < 4) throw new JayException("Error: bad Deadline line.");
                         LocalDateTime by = LocalDateTime.parse(parts[3].trim(), ISO);
                         t = new Deadline(desc, by);
                         break;
                     }
                     case 'E': {
-                        if (parts.length < 5) throw new JayParseException("Error: bad Event line.");
+                        if (parts.length < 5) throw new JayException("Error: bad Event line.");
                         LocalDateTime from = LocalDateTime.parse(parts[3].trim(), ISO);
                         LocalDateTime to   = LocalDateTime.parse(parts[4].trim(), ISO);
                         t = new Event(desc, from, to);
                         break;
                     }
                     default:
-                        throw new JayParseException("Error: unknown task type in storage: " + kind);
+                        throw new JayException("Error: unknown task type in storage: " + kind);
                 }
 
                 if (done == 1) t.markAsDone();
@@ -66,10 +66,10 @@ public class Storage {
             return tasks;
 
         } catch (IOException e) {
-            throw new JayInvalidCommandException("Error: cannot read save file: " + e.getMessage());
+            throw new JayException("Error: cannot read save file: " + e.getMessage());
         } catch (RuntimeException e) {
             // covers bad integers / bad indexing / bad date parse from corrupt lines
-            throw new JayParseException("Error: corrupted save file format.");
+            throw new JayException("Error: corrupted save file format.");
         }
     }
 
@@ -91,7 +91,7 @@ public class Storage {
                 }
             }
         } catch (IOException e) {
-            throw new JayInvalidCommandException("Error: cannot write save file: " + e.getMessage());
+            throw new JayException("Error: cannot write save file: " + e.getMessage());
         }
     }
 
@@ -122,7 +122,7 @@ public class Storage {
                     fromDateTime.format(ISO),
                     toDateTime.format(ISO));
         } else {
-            throw new JayParseException("Error: unrecognized task type in data file!");
+            throw new JayException("Error: unrecognized task type in data file!");
         }
     }
 }
