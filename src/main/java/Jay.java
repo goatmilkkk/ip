@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.*;
@@ -119,9 +121,13 @@ public class Jay {
                         if (!m.matches()) {
                             throw new JayParseException("Error: invalid format for Deadline!");
                         }
+                        LocalDateTime by = LocalDateTime.parse(
+                            m.group("by"),
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")
+                        );
                         tasks.add(new Deadline(
-                                m.group("desc").trim(),
-                                m.group("by").trim()
+                            m.group("desc").trim(),
+                            by
                         ));
                         storage.save(tasks);
                         System.out.println("\t____________________________________________________________");
@@ -137,10 +143,19 @@ public class Jay {
                         if (!m.matches()) {
                             throw new JayParseException("Error: invalid format for Event!");
                         }
+
+                        LocalDateTime from = LocalDateTime.parse(
+                            m.group("from"),
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")
+                        );
+                        LocalDateTime to = LocalDateTime.parse(
+                            m.group("to"),
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm")
+                        );
                         tasks.add(new Event(
-                                m.group("desc").trim(),
-                                m.group("from").trim(),
-                                m.group("to").trim()
+                            m.group("desc").trim(),
+                            from,
+                            to
                         ));
                         storage.save(tasks);
                         System.out.println("\t____________________________________________________________");
