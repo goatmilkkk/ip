@@ -39,12 +39,16 @@ public class Parser {
         return taskNumber;
     }
 
-    private static LocalDateTime parseDateTime(String raw) throws JayException {
+    private static LocalDateTime parseDateTimeString(String raw) throws JayException {
         try {
             return LocalDateTime.parse(raw, DATE_TIME_FORMAT);
         } catch (DateTimeParseException e) {
             throw new JayException("Error: invalid datetime");
         }
+    }
+
+    public static String formatDateTime(LocalDateTime dt) {
+        return dt.format(DateTimeFormatter.ofPattern("MMM dd yyyy h:mma"));
     }
 
     public static Todo parseTodo(String argument) throws JayException {
@@ -60,7 +64,7 @@ public class Parser {
         if (!m.matches()) {
             throw new JayException("Error: invalid format for Deadline!");
         }
-        LocalDateTime by = parseDateTime(m.group("by"));
+        LocalDateTime by = parseDateTimeString(m.group("by"));
         return new Deadline(m.group("desc").trim(), by);
     }
 
@@ -70,8 +74,8 @@ public class Parser {
         if (!m.matches()) {
             throw new JayException("Error: invalid format for Event!");
         }
-        LocalDateTime from = parseDateTime(m.group("from"));
-        LocalDateTime to = parseDateTime(m.group("to"));
+        LocalDateTime from = parseDateTimeString(m.group("from"));
+        LocalDateTime to = parseDateTimeString(m.group("to"));
         return new Event(m.group("desc").trim(), from, to);
     }
 }

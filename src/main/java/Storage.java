@@ -14,6 +14,10 @@ public class Storage {
         this.file = Paths.get("data", "duke.txt");
     }
 
+    public Storage(String file) {
+        this.file = Paths.get(file);
+    }
+
     /** Load tasks from disk. If file/folder missing, return empty list. */
     public ArrayList<Task> load() throws JayException {
         try {
@@ -52,7 +56,7 @@ public class Storage {
                     case 'E': {
                         if (parts.length < 5) throw new JayException("Error: bad Event line.");
                         LocalDateTime from = LocalDateTime.parse(parts[3].trim(), ISO);
-                        LocalDateTime to   = LocalDateTime.parse(parts[4].trim(), ISO);
+                        LocalDateTime to = LocalDateTime.parse(parts[4].trim(), ISO);
                         t = new Event(desc, from, to);
                         break;
                     }
@@ -60,7 +64,9 @@ public class Storage {
                         throw new JayException("Error: unknown task type in storage: " + kind);
                 }
 
-                if (done == 1) t.markAsDone();
+                if (done == 1) {
+                    t.markAsDone();
+                }
                 tasks.add(t);
             }
             return tasks;
@@ -68,7 +74,6 @@ public class Storage {
         } catch (IOException e) {
             throw new JayException("Error: cannot read save file: " + e.getMessage());
         } catch (RuntimeException e) {
-            // covers bad integers / bad indexing / bad date parse from corrupt lines
             throw new JayException("Error: corrupted save file format.");
         }
     }
@@ -113,7 +118,7 @@ public class Storage {
 
         } else if (t instanceof Event e) {
             LocalDateTime fromDateTime = e.from;
-            LocalDateTime toDateTime   = e.to;
+            LocalDateTime toDateTime = e.to;
 
             return String.join(" | ",
                     "E",

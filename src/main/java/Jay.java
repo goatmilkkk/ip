@@ -1,19 +1,26 @@
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.Scanner;
-import java.util.regex.*;
-import java.util.ArrayList;
 
 public class Jay {
 
-    public static void main(String[] args) throws JayException {
-        Storage storage = new Storage();
-        ArrayList<Task> tasks = storage.load();
-        Scanner scanner = new Scanner(System.in);
-        Ui ui = new Ui();
+    private Storage storage;
+    private TaskList tasks;
+    private Ui ui;
 
+    public Jay(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
+        try {
+            tasks = new TaskList(storage.load());
+        } catch (JayException e) {
+            ui.showError(e.getMessage());
+            tasks = new TaskList();
+        }
+    }
+
+    public void run() {
+        Scanner scanner = new Scanner(System.in);
         ui.showWelcome();
+
         while (true) {
             String input = scanner.nextLine();
             String[] parts = Parser.parseInput(input);
@@ -74,5 +81,9 @@ public class Jay {
                 ui.showError(e.toString());
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new Jay("data/tasks.txt").run();
     }
 }
