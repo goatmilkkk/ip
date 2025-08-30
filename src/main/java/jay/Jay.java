@@ -1,11 +1,19 @@
 package jay;
 
+/**
+ * Base Chatbot application
+ */
 public class Jay {
 
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Creates the {@code Jay} application.
+     *
+     * @param filePath The filepath to read the saved data from.
+     */
     public Jay(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -17,6 +25,9 @@ public class Jay {
         }
     }
 
+    /**
+     * The main menu for the {@code Yorm} application.
+     */
     public void run() {
         ui.showWelcome();
 
@@ -80,12 +91,11 @@ public class Jay {
                     ui.showAddedTask(tasks);
                     break;
 
-                case FIND: {
+                case FIND:
                     argument = Parser.parseArgument(input);
                     TaskList matches = tasks.findByKeyword(argument);
                     ui.showFoundTasks(matches);
                     break;
-                }
                 }
             } catch (JayException e) {
                 ui.showError(e.getMessage());
