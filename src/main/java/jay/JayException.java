@@ -1,4 +1,4 @@
-package Jay;
+package jay;
 
 public class JayException extends Exception {
     public JayException(String message) {

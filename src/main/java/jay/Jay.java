@@ -1,4 +1,4 @@
-package Jay;
+package jay;
 
 import java.util.Scanner;
 
@@ -20,17 +20,14 @@ public class Jay {
     }
 
     public void run() {
-        Scanner scanner = new Scanner(System.in);
         ui.showWelcome();
 
         while (true) {
             try {
-                String input = scanner.nextLine();
-                String[] parts = Parser.parseInput(input);
-                String rawCommand = parts[0];
-                String argument = parts[1];
+                String input = ui.scanLine();
+                Command command = Parser.parseCommand(input);
+                String argument = null;
 
-                Command command = Parser.parseCommand(rawCommand);
                 switch (command) {
                     case BYE:
                         ui.showBye();
@@ -41,6 +38,7 @@ public class Jay {
                         break;
 
                     case MARK:
+                        argument = Parser.parseArgument(input);
                         int markedIndex = Parser.parseTaskNumber(tasks, argument);
                         tasks.get(markedIndex).markAsDone();
                         storage.save(tasks);
@@ -48,6 +46,7 @@ public class Jay {
                         break;
 
                     case UNMARK:
+                        argument = Parser.parseArgument(input);
                         int unmarkedIndex = Parser.parseTaskNumber(tasks, argument);
                         tasks.get(unmarkedIndex).unmarkAsDone();
                         storage.save(tasks);
@@ -55,6 +54,7 @@ public class Jay {
                         break;
 
                     case DELETE:
+                        argument = Parser.parseArgument(input);
                         int delIndex = Parser.parseTaskNumber(tasks, argument);
                         Task removedTask = tasks.remove(delIndex);
                         storage.save(tasks);
@@ -62,27 +62,28 @@ public class Jay {
                         break;
 
                     case TODO:
+                        argument = Parser.parseArgument(input);
                         tasks.add(Parser.parseTodo(argument));
                         storage.save(tasks);
                         ui.showAddedTask(tasks);
                         break;
 
                     case DEADLINE:
+                        argument = Parser.parseArgument(input);
                         tasks.add(Parser.parseDeadline(argument));
                         storage.save(tasks);
                         ui.showAddedTask(tasks);
                         break;
 
                     case EVENT:
+                        argument = Parser.parseArgument(input);
                         tasks.add(Parser.parseEvent(argument));
                         storage.save(tasks);
                         ui.showAddedTask(tasks);
                         break;
                 }
             } catch (JayException e) {
-                System.out.println("\t____________________________________________________________");
-                System.out.println("\t " + e.getMessage());
-                System.out.println("\t____________________________________________________________\n");
+                ui.showError(e.getMessage());
             }
         }
     }

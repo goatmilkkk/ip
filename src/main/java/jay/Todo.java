@@ -1,4 +1,4 @@
-package Jay;
+package jay;
 
 public class Todo extends Task {
 

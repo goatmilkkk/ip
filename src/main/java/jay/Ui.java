@@ -1,8 +1,18 @@
-package Jay;
+package jay;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Ui {
+    private Scanner scanner;
+
+    public Ui() {
+        this.scanner = new Scanner(System.in);
+    }
+    public String scanLine() {
+        return scanner.nextLine();
+    }
+
     public void showWelcome() {
         System.out.println("\t____________________________________________________________");
         System.out.println("\tHello! I'm Jay");

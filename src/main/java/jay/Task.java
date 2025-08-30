@@ -1,4 +1,4 @@
-package Jay;
+package jay;
 
 public class Task {
     protected String description;
@@ -27,6 +27,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("[%s] %s", isDone() ? "X" : " ", description);
+        return String.format("[%s] %s", isDone() ? "X" : " ", getDescription());
     }
 }

@@ -1,4 +1,4 @@
-package Jay;
+package jay;
 
 import java.util.ArrayList;
 
