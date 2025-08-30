@@ -14,15 +14,13 @@ public class ParserTest {
     }
 
     @Test
-    public void parser_invalidEvent_ExceptionThrown() {
+    public void parser_invalidEvent_exceptionThrown() {
         assertThrows(JayException.class, () -> Parser.parseEvent("party /from 2025-09-01 0900"));
         assertThrows(JayException.class, () -> Parser.parseEvent("party /to 2025-09-01 0900"));
     }
 
     @Test
-    public void parser_invalidDateTime_ExceptionThrown() {
-        assertThrows(
-                JayException.class,
-                () -> Parser.parseEvent("lecture /from 2025-09-01 0900 /to not-a-date"));
+    public void parser_invalidDateTime_exceptionThrown() {
+        assertThrows(JayException.class, () -> Parser.parseEvent("lecture /from 2025-09-01 0900 /to not-a-date"));
     }
 }

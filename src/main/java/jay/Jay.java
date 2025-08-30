@@ -96,6 +96,9 @@ public class Jay {
                     TaskList matches = tasks.findByKeyword(argument);
                     ui.showFoundTasks(matches);
                     break;
+
+                default:
+                    throw new JayException("Error, unknown command");
                 }
             } catch (JayException e) {
                 ui.showError(e.getMessage());

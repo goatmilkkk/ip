@@ -45,7 +45,9 @@ public class Storage {
     public ArrayList<Task> load() throws JayException {
         try {
             if (Files.notExists(file)) {
-                if (file.getParent() != null) Files.createDirectories(file.getParent());
+                if (file.getParent() != null) {
+                    Files.createDirectories(file.getParent());
+                }
                 return new ArrayList<>();
             }
 
@@ -54,11 +56,15 @@ public class Storage {
 
             for (String raw : lines) {
                 String line = raw.trim();
-                if (line.isEmpty()) continue;
+                if (line.isEmpty()) {
+                    continue;
+                }
 
                 // format: TYPE | done | desc | [dates...]
                 String[] parts = line.split("\\s*\\|\\s*", -1);
-                if (parts.length < 3) throw new JayException("Error, corrupted save file format.");
+                if (parts.length < 3) {
+                    throw new JayException("Error, corrupted save file format.");
+                }
 
                 char kind = parts[0].trim().isEmpty() ? '?' : parts[0].trim().charAt(0);
                 int done = Integer.parseInt(parts[1].trim());
@@ -71,20 +77,26 @@ public class Storage {
                     break;
                 }
                 case 'D': {
-                    if (parts.length < 4) throw new JayException("Error, bad Deadline line.");
+                    if (parts.length < 4) {
+                        throw new JayException("Error, bad Deadline line.");
+                    }
                     LocalDateTime by = LocalDateTime.parse(parts[3].trim(), ISO);
                     t = new Deadline(desc, by);
                     break;
                 }
                 case 'E': {
-                    if (parts.length < 5) throw new JayException("Error, bad Event line.");
+                    if (parts.length < 5) {
+                        throw new JayException("Error, bad Event line.");
+                    }
                     LocalDateTime from = LocalDateTime.parse(parts[3].trim(), ISO);
                     LocalDateTime to = LocalDateTime.parse(parts[4].trim(), ISO);
                     t = new Event(desc, from, to);
                     break;
                 }
-                default:
+
+                default: {
                     throw new JayException("Error, unknown task type in storage: " + kind);
+                }
                 }
 
                 if (done == 1) {
@@ -109,7 +121,9 @@ public class Storage {
      */
     public void save(List<Task> tasks) throws JayException {
         try {
-            if (file.getParent() != null) Files.createDirectories(file.getParent());
+            if (file.getParent() != null) {
+                Files.createDirectories(file.getParent());
+            }
 
             try (BufferedWriter w =
                          Files.newBufferedWriter(
