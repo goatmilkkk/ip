@@ -8,19 +8,36 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles saving and loading of tasks from a file.
+ */
 public class Storage {
     private static final DateTimeFormatter ISO = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private final Path file;
 
+    /**
+     * Creates a storage that saves to the default file path {@code data/tasks.txt}.
+     */
     public Storage() {
         this.file = Paths.get("data", "tasks.txt");
     }
 
+    /**
+     * Creates a storage with a custom file path.
+     *
+     * @param file The file path to use.
+     */
     public Storage(String file) {
         this.file = Paths.get(file);
     }
 
-    /** Load tasks from disk. If file/folder missing, return empty list. */
+    /**
+     * Loads tasks from the save file. If the file does not exist,
+     * a new empty list is returned.
+     *
+     * @return A list of tasks from the file.
+     * @throws JayException If the file is corrupted or cannot be read.
+     */
     public ArrayList<Task> load() throws JayException {
         try {
             if (Files.notExists(file)) {
@@ -80,7 +97,12 @@ public class Storage {
         }
     }
 
-    /** Save all tasks to disk, creating ./data/ if missing. */
+    /**
+     * Saves the given list of tasks to the file.
+     *
+     * @param tasks The list of tasks to save.
+     * @throws JayException If the file cannot be written to.
+     */
     public void save(List<Task> tasks) throws JayException {
         try {
             if (file.getParent() != null) Files.createDirectories(file.getParent());
@@ -102,7 +124,13 @@ public class Storage {
         }
     }
 
-    /** Always serialize dates as ISO yyyy-MM-dd (not pretty). */
+    /**
+     * Converts a task into a saveable string representation.
+     *
+     * @param t The task to serialize.
+     * @return The serialized task string.
+     * @throws JayException If the task type is not recognized.
+     */
     private static String serialize(Task t) throws JayException {
         if (t instanceof Todo td) {
             return String.join(" | ",
