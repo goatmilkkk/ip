@@ -24,13 +24,13 @@ public class Jay {
         ui.showWelcome();
 
         while (true) {
-            String input = scanner.nextLine();
-            String[] parts = Parser.parseInput(input);
-            String rawCommand = parts[0];
-            String argument = parts[1];
-
             try {
-                Parser.Command command = Parser.Command.parse(rawCommand);
+                String input = scanner.nextLine();
+                String[] parts = Parser.parseInput(input);
+                String rawCommand = parts[0];
+                String argument = parts[1];
+
+                Command command = Parser.parseCommand(rawCommand);
                 switch (command) {
                     case BYE:
                         ui.showBye();
@@ -80,7 +80,9 @@ public class Jay {
                         break;
                 }
             } catch (JayException e) {
-                ui.showError(e.toString());
+                System.out.println("\t____________________________________________________________");
+                System.out.println("\t " + e.getMessage());
+                System.out.println("\t____________________________________________________________\n");
             }
         }
     }

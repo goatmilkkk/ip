@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Ui {
     public void showWelcome() {
         System.out.println("\t____________________________________________________________");
-        System.out.println("\tHello! I'm Jay.Jay");
+        System.out.println("\tHello! I'm Jay");
         System.out.println("\tWhat can I do for you?");
         System.out.println("\t____________________________________________________________\n");
     }
@@ -50,13 +50,14 @@ public class Ui {
     public void showAddedTask(ArrayList<Task> tasks) {
         System.out.println("\t____________________________________________________________");
         System.out.println("\t Got it. I've added this task:");
-        System.out.println("\t   " + tasks.getLast());
+        System.out.println("\t   " + tasks.get(tasks.size() - 1));
         System.out.println("\t Now you have " + tasks.size() + " tasks in the list.");
         System.out.println("\t____________________________________________________________\n");
     }
-    public void showError(String error) {
+
+    public void showError(String message) {
         System.out.println("\t____________________________________________________________");
-        System.out.println("\t " + error);
+        System.out.println("\t " + message);
         System.out.println("\t____________________________________________________________\n");
     }
 }

@@ -11,15 +11,11 @@ import java.util.regex.Pattern;
 public class Parser {
     private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
-    public enum Command {
-        BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT;
-
-        static Command parse(String raw) throws JayException {
-            try {
-                return Command.valueOf(raw.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                throw new JayException("Error: invalid command!");
-            }
+    static Command parseCommand(String raw) throws JayException {
+        try {
+            return Command.valueOf(raw.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new JayException("Error: invalid command!");
         }
     }
 
@@ -55,7 +51,7 @@ public class Parser {
 
     public static Todo parseTodo(String argument) throws JayException {
         if (Objects.equals(argument, "")) {
-            throw new JayException("Error: empty description for Jay.Todo!");
+            throw new JayException("Error: empty description for Todo!");
         }
         return new Todo(argument);
     }
@@ -64,7 +60,7 @@ public class Parser {
         Pattern deadlinePattern = Pattern.compile("^(?<desc>.+?)\\s*/by\\s+(?<by>.+)$");
         Matcher m = deadlinePattern.matcher(argument);
         if (!m.matches()) {
-            throw new JayException("Error: invalid format for Jay.Deadline!");
+            throw new JayException("Error: invalid format for Deadline!");
         }
         LocalDateTime by = parseDateTimeString(m.group("by"));
         return new Deadline(m.group("desc").trim(), by);
@@ -74,7 +70,7 @@ public class Parser {
         Pattern eventPattern = Pattern.compile("^(?<desc>.+?)\\s*/from\\s+(?<from>.+?)\\s*/to\\s+(?<to>.+)$");
         Matcher m = eventPattern.matcher(argument);
         if (!m.matches()) {
-            throw new JayException("Error: invalid format for Jay.Event!");
+            throw new JayException("Error: invalid format for Event!");
         }
         LocalDateTime from = parseDateTimeString(m.group("from"));
         LocalDateTime to = parseDateTimeString(m.group("to"));
