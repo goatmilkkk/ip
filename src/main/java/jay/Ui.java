@@ -9,6 +9,7 @@ public class Ui {
     public Ui() {
         this.scanner = new Scanner(System.in);
     }
+
     public String scanLine() {
         return scanner.nextLine();
     }
@@ -68,6 +69,25 @@ public class Ui {
     public void showError(String message) {
         System.out.println("\t____________________________________________________________");
         System.out.println("\t " + message);
+        System.out.println("\t____________________________________________________________\n");
+    }
+
+    /**
+     * Displays the list of tasks that match a given search keyword.
+     * If no tasks match, a message indicating that there are no matches
+     * will be shown instead.
+     *
+     * @param matches The list of tasks that matched the search criteria.
+     */
+    public void showFoundTasks(TaskList matches) {
+        System.out.println("\t____________________________________________________________");
+        System.out.println("\t Here are the matching tasks in your list:");
+        for (int i = 0; i < matches.size(); i++) {
+            System.out.println("\t " + (i + 1) + "." + matches.get(i).toString());
+        }
+        if (matches.isEmpty()) {
+            System.out.println("\t (no matches)");
+        }
         System.out.println("\t____________________________________________________________\n");
     }
 }
