@@ -90,6 +90,12 @@ public class Jay {
                     storage.save(tasks);
                     ui.showAddedTask(tasks);
                     break;
+
+                case FIND:
+                    argument = Parser.parseArgument(input);
+                    TaskList matches = tasks.findByKeyword(argument);
+                    ui.showFoundTasks(matches);
+                    break;
                 }
             } catch (JayException e) {
                 ui.showError(e.getMessage());
