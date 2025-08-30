@@ -38,58 +38,58 @@ public class Jay {
                 String argument = null;
 
                 switch (command) {
-                    case BYE:
-                        ui.showBye();
-                        return;
+                case BYE:
+                    ui.showBye();
+                    return;
 
-                    case LIST:
-                        ui.showTasks(tasks);
-                        break;
+                case LIST:
+                    ui.showTasks(tasks);
+                    break;
 
-                    case MARK:
-                        argument = Parser.parseArgument(input);
-                        int markedIndex = Parser.parseTaskNumber(tasks, argument);
-                        tasks.get(markedIndex).markAsDone();
-                        storage.save(tasks);
-                        ui.showMarkedTask(tasks, markedIndex);
-                        break;
+                case MARK:
+                    argument = Parser.parseArgument(input);
+                    int markedIndex = Parser.parseTaskNumber(tasks, argument);
+                    tasks.get(markedIndex).markAsDone();
+                    storage.save(tasks);
+                    ui.showMarkedTask(tasks, markedIndex);
+                    break;
 
-                    case UNMARK:
-                        argument = Parser.parseArgument(input);
-                        int unmarkedIndex = Parser.parseTaskNumber(tasks, argument);
-                        tasks.get(unmarkedIndex).unmarkAsDone();
-                        storage.save(tasks);
-                        ui.showUnmarkedTask(tasks, unmarkedIndex);
-                        break;
+                case UNMARK:
+                    argument = Parser.parseArgument(input);
+                    int unmarkedIndex = Parser.parseTaskNumber(tasks, argument);
+                    tasks.get(unmarkedIndex).unmarkAsDone();
+                    storage.save(tasks);
+                    ui.showUnmarkedTask(tasks, unmarkedIndex);
+                    break;
 
-                    case DELETE:
-                        argument = Parser.parseArgument(input);
-                        int delIndex = Parser.parseTaskNumber(tasks, argument);
-                        Task removedTask = tasks.remove(delIndex);
-                        storage.save(tasks);
-                        ui.showRemovedTask(tasks, removedTask);
-                        break;
+                case DELETE:
+                    argument = Parser.parseArgument(input);
+                    int delIndex = Parser.parseTaskNumber(tasks, argument);
+                    Task removedTask = tasks.remove(delIndex);
+                    storage.save(tasks);
+                    ui.showRemovedTask(tasks, removedTask);
+                    break;
 
-                    case TODO:
-                        argument = Parser.parseArgument(input);
-                        tasks.add(Parser.parseTodo(argument));
-                        storage.save(tasks);
-                        ui.showAddedTask(tasks);
-                        break;
+                case TODO:
+                    argument = Parser.parseArgument(input);
+                    tasks.add(Parser.parseTodo(argument));
+                    storage.save(tasks);
+                    ui.showAddedTask(tasks);
+                    break;
 
-                    case DEADLINE:
-                        argument = Parser.parseArgument(input);
-                        tasks.add(Parser.parseDeadline(argument));
-                        storage.save(tasks);
-                        ui.showAddedTask(tasks);
-                        break;
+                case DEADLINE:
+                    argument = Parser.parseArgument(input);
+                    tasks.add(Parser.parseDeadline(argument));
+                    storage.save(tasks);
+                    ui.showAddedTask(tasks);
+                    break;
 
-                    case EVENT:
-                        argument = Parser.parseArgument(input);
-                        tasks.add(Parser.parseEvent(argument));
-                        storage.save(tasks);
-                        ui.showAddedTask(tasks);
-                        break;
+                case EVENT:
+                    argument = Parser.parseArgument(input);
+                    tasks.add(Parser.parseEvent(argument));
+                    storage.save(tasks);
+                    ui.showAddedTask(tasks);
+                    break;
                 }
             } catch (JayException e) {
                 ui.showError(e.getMessage());

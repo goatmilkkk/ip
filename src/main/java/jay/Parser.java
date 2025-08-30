@@ -12,7 +12,8 @@ import java.util.regex.Pattern;
  * Handles parsing of user commands and task arguments.
  */
 public class Parser {
-    private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    private static final DateTimeFormatter DATE_TIME_FORMAT =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
     /**
      * Parses the command word from user input.
@@ -129,7 +130,8 @@ public class Parser {
      * @throws JayException If the format is invalid.
      */
     public static Event parseEvent(String argument) throws JayException {
-        Pattern eventPattern = Pattern.compile("^(?<desc>.+?)\\s*/from\\s+(?<from>.+?)\\s*/to\\s+(?<to>.+)$");
+        Pattern eventPattern =
+                Pattern.compile("^(?<desc>.+?)\\s*/from\\s+(?<from>.+?)\\s*/to\\s+(?<to>.+)$");
         Matcher m = eventPattern.matcher(argument);
         if (!m.matches()) {
             throw new JayException("Error, invalid format for Event!");
