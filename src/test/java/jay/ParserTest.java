@@ -1,8 +1,9 @@
 package jay;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class ParserTest {
 
@@ -20,7 +21,8 @@ public class ParserTest {
 
     @Test
     public void parser_invalidDateTime_ExceptionThrown() {
-        assertThrows(JayException.class, () -> Parser.parseEvent("lecture /from 2025-09-01 0900 /to not-a-date"));
+        assertThrows(
+                JayException.class,
+                () -> Parser.parseEvent("lecture /from 2025-09-01 0900 /to not-a-date"));
     }
-
 }

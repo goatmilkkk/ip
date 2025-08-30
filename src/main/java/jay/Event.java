@@ -9,7 +9,7 @@ public class Event extends Task {
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
         this.from = from;
-        this.to   = to;
+        this.to = to;
     }
 
     public LocalDateTime getFrom() {
@@ -22,7 +22,12 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + Parser.formatDateTime(getFrom())
-                + " to: " + Parser.formatDateTime(getTo()) + ")";
+        return "[E]"
+                + super.toString()
+                + " (from: "
+                + Parser.formatDateTime(getFrom())
+                + " to: "
+                + Parser.formatDateTime(getTo())
+                + ")";
     }
 }

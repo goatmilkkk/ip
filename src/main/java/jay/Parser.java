@@ -9,7 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser {
-    private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    private static final DateTimeFormatter DATE_TIME_FORMAT =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
     static Command parseCommand(String input) throws JayException {
         try {
@@ -27,7 +28,6 @@ public class Parser {
         } catch (Exception e) {
             throw new JayException("Error, invalid argument!");
         }
-
     }
 
     public static int parseTaskNumber(ArrayList<Task> tasks, String argument) throws JayException {
@@ -71,7 +71,8 @@ public class Parser {
     }
 
     public static Event parseEvent(String argument) throws JayException {
-        Pattern eventPattern = Pattern.compile("^(?<desc>.+?)\\s*/from\\s+(?<from>.+?)\\s*/to\\s+(?<to>.+)$");
+        Pattern eventPattern =
+                Pattern.compile("^(?<desc>.+?)\\s*/from\\s+(?<from>.+?)\\s*/to\\s+(?<to>.+)$");
         Matcher m = eventPattern.matcher(argument);
         if (!m.matches()) {
             throw new JayException("Error, invalid format for Event!");

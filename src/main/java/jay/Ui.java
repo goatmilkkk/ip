@@ -9,6 +9,7 @@ public class Ui {
     public Ui() {
         this.scanner = new Scanner(System.in);
     }
+
     public String scanLine() {
         return scanner.nextLine();
     }
