@@ -3,16 +3,31 @@ package jay;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Handles user interaction by displaying messages and reading input.
+ */
 public class Ui {
     private Scanner scanner;
 
+    /**
+     * Creates a new {@code Ui} with a scanner for user input.
+     */
     public Ui() {
         this.scanner = new Scanner(System.in);
     }
+
+    /**
+     * Reads a line of user input.
+     *
+     * @return The input line from the user.
+     */
     public String scanLine() {
         return scanner.nextLine();
     }
 
+    /**
+     * Displays the welcome message.
+     */
     public void showWelcome() {
         System.out.println("\t____________________________________________________________");
         System.out.println("\tHello! I'm Jay");
@@ -20,12 +35,20 @@ public class Ui {
         System.out.println("\t____________________________________________________________\n");
     }
 
+    /**
+     * Displays the goodbye message.
+     */
     public void showBye() {
         System.out.println("\t____________________________________________________________");
         System.out.println("\t Bye. Hope to see you again soon!");
         System.out.println("\t____________________________________________________________\n");
     }
 
+    /**
+     * Displays all tasks in the list.
+     *
+     * @param tasks The list of tasks.
+     */
     public void showTasks(ArrayList<Task> tasks) {
         System.out.println("\t____________________________________________________________");
         System.out.println("\t Here are the tasks in your list:");
@@ -35,6 +58,12 @@ public class Ui {
         System.out.println("\t____________________________________________________________\n");
     }
 
+    /**
+     * Displays a message when a task is marked as done.
+     *
+     * @param tasks       The list of tasks.
+     * @param markedIndex The index of the task that was marked.
+     */
     public void showMarkedTask(ArrayList<Task> tasks, int markedIndex) {
         System.out.println("\t____________________________________________________________");
         System.out.println("\t Nice! I've marked this task as done:");
@@ -42,6 +71,12 @@ public class Ui {
         System.out.println("\t____________________________________________________________\n");
     }
 
+    /**
+     * Displays a message when a task is marked as not done.
+     *
+     * @param tasks         The list of tasks.
+     * @param unmarkedIndex The index of the task that was unmarked.
+     */
     public void showUnmarkedTask(ArrayList<Task> tasks, int unmarkedIndex) {
         System.out.println("\t____________________________________________________________");
         System.out.println("\t OK, I've marked this task as not done yet:");
@@ -49,6 +84,12 @@ public class Ui {
         System.out.println("\t____________________________________________________________\n");
     }
 
+    /**
+     * Displays a message when a task is removed.
+     *
+     * @param tasks       The list of tasks after removal.
+     * @param removedTask The task that was removed.
+     */
     public void showRemovedTask(ArrayList<Task> tasks, Task removedTask) {
         System.out.println("\t____________________________________________________________");
         System.out.println("\t Noted. I've removed this task:");
@@ -57,6 +98,11 @@ public class Ui {
         System.out.println("\t____________________________________________________________\n");
     }
 
+    /**
+     * Displays a message when a task is added.
+     *
+     * @param tasks The list of tasks after adding.
+     */
     public void showAddedTask(ArrayList<Task> tasks) {
         System.out.println("\t____________________________________________________________");
         System.out.println("\t Got it. I've added this task:");
@@ -65,6 +111,11 @@ public class Ui {
         System.out.println("\t____________________________________________________________\n");
     }
 
+    /**
+     * Displays an error message.
+     *
+     * @param message The error message to display.
+     */
     public void showError(String message) {
         System.out.println("\t____________________________________________________________");
         System.out.println("\t " + message);
