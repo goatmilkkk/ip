@@ -1,3 +1,5 @@
+package Jay;
+
 import java.util.Scanner;
 
 public class Jay {

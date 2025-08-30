@@ -1,5 +1,5 @@
 	____________________________________________________________
-	Hello! I'm Jay
+	Hello! I'm Jay.Jay
 	What can I do for you?
 	____________________________________________________________
 
@@ -19,13 +19,13 @@
 
 	____________________________________________________________
 	 Got it. I've added this task:
-	   [D][ ] return book (by: Sunday)
+	   [D][ ] return book (by: Oct 15 2019 6:00pm)
 	 Now you have 2 tasks in the list.
 	____________________________________________________________
 
 	____________________________________________________________
 	 Got it. I've added this task:
-	   [E][ ] project meeting (from: Mon 2pm to: 4pm)
+	   [E][ ] project meeting (from: Feb 02 2002 6:00pm to: May 05 2020 8:15am)
 	 Now you have 3 tasks in the list.
 	____________________________________________________________
 
@@ -37,35 +37,35 @@
 	____________________________________________________________
 	 Here are the tasks in your list:
 	 1. [T][X] borrow book
-	 2. [D][ ] return book (by: Sunday)
-	 3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
+	 2. [D][ ] return book (by: Oct 15 2019 6:00pm)
+	 3. [E][ ] project meeting (from: Feb 02 2002 6:00pm to: May 05 2020 8:15am)
 	____________________________________________________________
 
 	____________________________________________________________
-	 Error: empty description for Todo!
+	 Error: empty description for Jay.Todo!
 	____________________________________________________________
 
 	____________________________________________________________
-	 Error: invalid format for Event!
+	 Error: invalid format for Jay.Event!
 	____________________________________________________________
 
 	____________________________________________________________
 	 Here are the tasks in your list:
 	 1. [T][X] borrow book
-	 2. [D][ ] return book (by: Sunday)
-	 3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
+	 2. [D][ ] return book (by: Oct 15 2019 6:00pm)
+	 3. [E][ ] project meeting (from: Feb 02 2002 6:00pm to: May 05 2020 8:15am)
 	____________________________________________________________
 
 	____________________________________________________________
 	 Noted. I've removed this task:
-	   [D][ ] return book (by: Sunday)
+	   [D][ ] return book (by: Oct 15 2019 6:00pm)
 	 Now you have 2 tasks in the list.
 	____________________________________________________________
 
 	____________________________________________________________
 	 Here are the tasks in your list:
 	 1. [T][X] borrow book
-	 2. [E][ ] project meeting (from: Mon 2pm to: 4pm)
+	 2. [E][ ] project meeting (from: Feb 02 2002 6:00pm to: May 05 2020 8:15am)
 	____________________________________________________________
 
 	____________________________________________________________

@@ -1,9 +1,11 @@
+package Jay;
+
 import java.util.ArrayList;
 
 public class Ui {
     public void showWelcome() {
         System.out.println("\t____________________________________________________________");
-        System.out.println("\tHello! I'm Jay");
+        System.out.println("\tHello! I'm Jay.Jay");
         System.out.println("\tWhat can I do for you?");
         System.out.println("\t____________________________________________________________\n");
     }

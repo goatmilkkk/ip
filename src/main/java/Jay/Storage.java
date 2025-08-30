@@ -1,3 +1,5 @@
+package Jay;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
@@ -11,7 +13,7 @@ public class Storage {
     private final Path file;
 
     public Storage() {
-        this.file = Paths.get("data", "duke.txt");
+        this.file = Paths.get("data", "tasks.txt");
     }
 
     public Storage(String file) {
@@ -48,13 +50,13 @@ public class Storage {
                         break;
                     }
                     case 'D': {
-                        if (parts.length < 4) throw new JayException("Error: bad Deadline line.");
+                        if (parts.length < 4) throw new JayException("Error: bad Jay.Deadline line.");
                         LocalDateTime by = LocalDateTime.parse(parts[3].trim(), ISO);
                         t = new Deadline(desc, by);
                         break;
                     }
                     case 'E': {
-                        if (parts.length < 5) throw new JayException("Error: bad Event line.");
+                        if (parts.length < 5) throw new JayException("Error: bad Jay.Event line.");
                         LocalDateTime from = LocalDateTime.parse(parts[3].trim(), ISO);
                         LocalDateTime to = LocalDateTime.parse(parts[4].trim(), ISO);
                         t = new Event(desc, from, to);
