@@ -1,4 +1,4 @@
-package jay;
+package jay.parser;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jay.command.Command;
+import jay.exception.JayException;
+import jay.tasks.Deadline;
+import jay.tasks.Event;
+import jay.tasks.Task;
+import jay.tasks.Todo;
 
 /**
  * Handles parsing of user commands and task arguments.
@@ -22,12 +29,12 @@ public class Parser {
      * @return The parsed {@code Command}.
      * @throws JayException If the command is invalid.
      */
-    static Command parseCommand(String input) throws JayException {
+    public static Command parseCommand(String input) throws JayException {
         try {
             String[] words = input.split("\\s+", 2);
             return Command.valueOf(words[0].toUpperCase());
         } catch (Exception e) {
-            throw new JayException("Error, invalid command!");
+            throw new JayException("invalid command!");
         }
     }
 
@@ -43,7 +50,7 @@ public class Parser {
             String[] words = input.split("\\s+", 2);
             return words[1];
         } catch (Exception e) {
-            throw new JayException("Error, invalid argument!");
+            throw new JayException("invalid argument!");
         }
     }
 
@@ -57,11 +64,11 @@ public class Parser {
      */
     public static int parseTaskNumber(ArrayList<Task> tasks, String argument) throws JayException {
         if (!argument.matches("\\d+")) {
-            throw new JayException("Error, not a task number!");
+            throw new JayException("not a task number!");
         }
         int taskNumber = Integer.parseInt(argument) - 1;
         if (taskNumber < 0 || taskNumber >= tasks.size()) {
-            throw new JayException("Error, invalid task number!");
+            throw new JayException("invalid task number!");
         }
         return taskNumber;
     }
@@ -77,7 +84,7 @@ public class Parser {
         try {
             return LocalDateTime.parse(raw, DATE_TIME_FORMAT);
         } catch (DateTimeParseException e) {
-            throw new JayException("Error, invalid datetime");
+            throw new JayException("invalid datetime");
         }
     }
 
@@ -100,7 +107,7 @@ public class Parser {
      */
     public static Todo parseTodo(String argument) throws JayException {
         if (Objects.equals(argument, "")) {
-            throw new JayException("Error, empty description for Todo!");
+            throw new JayException("empty description for Todo!");
         }
         return new Todo(argument);
     }
@@ -116,7 +123,7 @@ public class Parser {
         Pattern deadlinePattern = Pattern.compile("^(?<desc>.+?)\\s*/by\\s+(?<by>.+)$");
         Matcher m = deadlinePattern.matcher(argument);
         if (!m.matches()) {
-            throw new JayException("Error, invalid format for Deadline!");
+            throw new JayException("invalid format for Deadline!");
         }
         LocalDateTime by = parseDateTimeString(m.group("by"));
         return new Deadline(m.group("desc").trim(), by);
@@ -134,7 +141,7 @@ public class Parser {
                 Pattern.compile("^(?<desc>.+?)\\s*/from\\s+(?<from>.+?)\\s*/to\\s+(?<to>.+)$");
         Matcher m = eventPattern.matcher(argument);
         if (!m.matches()) {
-            throw new JayException("Error, invalid format for Event!");
+            throw new JayException("invalid format for Event!");
         }
         LocalDateTime from = parseDateTimeString(m.group("from"));
         LocalDateTime to = parseDateTimeString(m.group("to"));

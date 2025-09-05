@@ -1,6 +1,8 @@
-package jay;
+package jay.tasks;
 
 import java.time.LocalDateTime;
+
+import jay.parser.Parser;
 
 /**
  * Represents a task with a description and a deadline.
@@ -12,7 +14,7 @@ public class Deadline extends Task {
      * Creates a new deadline task.
      *
      * @param description The task description.
-     * @param by The deadline datetime.
+     * @param by          The deadline datetime.
      */
     public Deadline(String description, LocalDateTime by) {
         super(description);

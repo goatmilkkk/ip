@@ -7,6 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import jay.tasklist.TaskList;
+import jay.tasks.Task;
+import jay.tasks.Todo;
+
 public class TaskListTest {
 
     @Test

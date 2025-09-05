@@ -1,13 +1,12 @@
-package jay;
+package jay.tasks;
 
 /**
- * Represents a simple todo task.
+ * Represents a simple Todo task.
  */
 public class Todo extends Task {
-    protected String by; // not used, but kept for compatibility
 
     /**
-     * Creates a new todo task.
+     * Creates a new Todo task.
      *
      * @param description The task description.
      */

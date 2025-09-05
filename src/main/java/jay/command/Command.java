@@ -1,4 +1,4 @@
-package jay;
+package jay.command;
 
 /**
  * Represents the set of valid commands accept by the Chatbot
@@ -12,5 +12,5 @@ public enum Command {
     TODO,
     DEADLINE,
     EVENT,
-    FIND;
+    FIND
 }

@@ -1,4 +1,4 @@
-package jay;
+package jay.storage;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -11,6 +11,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import jay.exception.JayException;
+import jay.tasks.Deadline;
+import jay.tasks.Event;
+import jay.tasks.Task;
+import jay.tasks.Todo;
 
 /**
  * Handles saving and loading of tasks from a file.
@@ -62,46 +68,7 @@ public class Storage {
 
                 // format: TYPE | done | desc | [dates...]
                 String[] parts = line.split("\\s*\\|\\s*", -1);
-                if (parts.length < 3) {
-                    throw new JayException("Error, corrupted save file format.");
-                }
-
-                char kind = parts[0].trim().isEmpty() ? '?' : parts[0].trim().charAt(0);
-                int done = Integer.parseInt(parts[1].trim());
-                String desc = parts[2];
-
-                Task t;
-                switch (kind) {
-                case 'T': {
-                    t = new Todo(desc);
-                    break;
-                }
-                case 'D': {
-                    if (parts.length < 4) {
-                        throw new JayException("Error, bad Deadline line.");
-                    }
-                    LocalDateTime by = LocalDateTime.parse(parts[3].trim(), ISO);
-                    t = new Deadline(desc, by);
-                    break;
-                }
-                case 'E': {
-                    if (parts.length < 5) {
-                        throw new JayException("Error, bad Event line.");
-                    }
-                    LocalDateTime from = LocalDateTime.parse(parts[3].trim(), ISO);
-                    LocalDateTime to = LocalDateTime.parse(parts[4].trim(), ISO);
-                    t = new Event(desc, from, to);
-                    break;
-                }
-
-                default: {
-                    throw new JayException("Error, unknown task type in storage: " + kind);
-                }
-                }
-
-                if (done == 1) {
-                    t.markAsDone();
-                }
+                Task t = deserialize(parts);
                 tasks.add(t);
             }
             return tasks;
@@ -111,6 +78,55 @@ public class Storage {
         } catch (RuntimeException e) {
             throw new JayException("Error, corrupted save file format.");
         }
+    }
+
+    /**
+     * Converts a serialized string into a {@code Task} object.
+     *
+     * @param parts The serialized task string.
+     * @return The deserialized Task object.
+     * @throws JayException If the string format is invalid or task type is not recognized.
+     */
+    private static Task deserialize(String[] parts) throws JayException {
+        if (parts.length < 3) {
+            throw new JayException("corrupted save file format.");
+        }
+
+        char kind = parts[0].trim().isEmpty() ? '?' : parts[0].trim().charAt(0);
+        int done = Integer.parseInt(parts[1].trim());
+        String desc = parts[2];
+
+        Task t;
+        switch (kind) {
+        case 'T':
+            t = new Todo(desc);
+            break;
+
+        case 'D':
+            if (parts.length < 4) {
+                throw new JayException("bad Deadline line.");
+            }
+            LocalDateTime by = LocalDateTime.parse(parts[3].trim(), ISO);
+            t = new Deadline(desc, by);
+            break;
+
+        case 'E':
+            if (parts.length < 5) {
+                throw new JayException("bad Event line.");
+            }
+            LocalDateTime from = LocalDateTime.parse(parts[3].trim(), ISO);
+            LocalDateTime to = LocalDateTime.parse(parts[4].trim(), ISO);
+            t = new Event(desc, from, to);
+            break;
+
+        default:
+            throw new JayException("unknown task type in storage: " + kind);
+        }
+
+        if (done == 1) {
+            t.markAsDone();
+        }
+        return t;
     }
 
     /**
@@ -139,12 +155,12 @@ public class Storage {
                 }
             }
         } catch (IOException e) {
-            throw new JayException("Error, cannot write save file: " + e.getMessage());
+            throw new JayException("cannot write save file: " + e.getMessage());
         }
     }
 
     /**
-     * Converts a task into a saveable string representation.
+     * Converts a task into its string representation.
      *
      * @param t The task to serialize.
      * @return The serialized task string.
@@ -160,8 +176,8 @@ public class Storage {
                     " | ", "D", d.isDone() ? "1" : "0", d.getDescription(), byDate.format(ISO));
 
         } else if (t instanceof Event e) {
-            LocalDateTime fromDateTime = e.from;
-            LocalDateTime toDateTime = e.to;
+            LocalDateTime fromDateTime = e.getFrom();
+            LocalDateTime toDateTime = e.getTo();
 
             return String.join(
                     " | ",
@@ -171,7 +187,7 @@ public class Storage {
                     fromDateTime.format(ISO),
                     toDateTime.format(ISO));
         } else {
-            throw new JayException("Error, unrecognized task type in data file!");
+            throw new JayException("unrecognized task type in data file!");
         }
     }
 }
