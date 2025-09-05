@@ -1,4 +1,4 @@
-package jay;
+package jay.exception;
 
 /**
  * Represents an exception specific to the Jay application.

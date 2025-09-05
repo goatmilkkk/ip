@@ -5,6 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import jay.exception.JayException;
+import jay.parser.Parser;
+import jay.tasks.Event;
+
 public class ParserTest {
 
     @Test

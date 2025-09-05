@@ -1,4 +1,4 @@
-package jay;
+package jay.tasks;
 
 /**
  * Represents a generic task with a description and completion status.
