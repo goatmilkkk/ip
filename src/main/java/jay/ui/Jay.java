@@ -31,6 +31,7 @@ public class Jay {
      * @param filePath The filepath to read the saved data from.
      */
     public Jay(String filePath) {
+        assert filePath != null && !filePath.isBlank();
         ui = new Ui();
         storage = new Storage(filePath);
         try {

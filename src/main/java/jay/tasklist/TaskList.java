@@ -34,6 +34,7 @@ public class TaskList extends ArrayList<Task> {
      * @return A new {@code TaskList} containing the tasks that matched.
      */
     public TaskList findByKeyword(String keyword) {
+        assert keyword != null;
         TaskList matches = new TaskList();
         if (Objects.equals(keyword, "")) {
             return matches;
