@@ -1,7 +1,7 @@
 package jay.tasklist;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 import jay.tasks.Task;
 
@@ -34,16 +34,12 @@ public class TaskList extends ArrayList<Task> {
      * @return A new {@code TaskList} containing the tasks that matched.
      */
     public TaskList findByKeyword(String keyword) {
-        TaskList matches = new TaskList();
-        if (Objects.equals(keyword, "")) {
-            return matches;
+        if (keyword == null || keyword.isBlank()) {
+            return new TaskList();
         }
         String needle = keyword.toLowerCase();
-        for (Task t : this) {
-            if (t.getDescription().toLowerCase().contains(needle)) {
-                matches.add(t);
-            }
-        }
-        return matches;
+        return this.stream()
+                .filter(t -> t.getDescription().toLowerCase().contains(needle))
+                .collect(Collectors.toCollection(TaskList::new));
     }
 }
