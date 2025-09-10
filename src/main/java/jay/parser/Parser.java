@@ -30,12 +30,8 @@ public class Parser {
      * @throws JayException If the command is invalid.
      */
     public static Command parseCommand(String input) throws JayException {
-        try {
-            String[] words = input.split("\\s+", 2);
-            return Command.valueOf(words[0].toUpperCase());
-        } catch (Exception e) {
-            throw new JayException("invalid command!");
-        }
+        String[] words = input.trim().split("\\s+", 2);
+        return Command.fromString(words[0]);
     }
 
     /**

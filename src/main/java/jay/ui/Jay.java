@@ -52,7 +52,7 @@ public class Jay {
 
             switch (command) {
             case BYE:
-                return ui.showBye();
+                return Ui.showBye();
             case LIST:
                 return ui.showTasks(tasks);
             case MARK:

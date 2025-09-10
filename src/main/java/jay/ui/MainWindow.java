@@ -58,8 +58,8 @@ public class MainWindow extends AnchorPane {
         );
         userInput.clear();
 
-        if (Objects.equals(input, "bye")) {
-            Platform.exit(); // closes the JavaFX app
+        if (Objects.equals(response, Ui.showBye())) {
+            Platform.exit();
         }
     }
 }

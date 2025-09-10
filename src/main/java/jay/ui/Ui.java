@@ -22,7 +22,7 @@ public class Ui {
      *
      * @return The goodbye message string.
      */
-    public String showBye() {
+    public static String showBye() {
         return "Bye. Hope to see you again soon!";
     }
 
