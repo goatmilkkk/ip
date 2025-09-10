@@ -11,8 +11,6 @@ import jay.tasks.Task;
  * Base Chatbot application
  */
 public class Jay {
-
-
     private final Storage storage;
     private TaskList tasks;
     private final Ui ui;
@@ -45,69 +43,137 @@ public class Jay {
     /**
      * Processes the user input and executes the corresponding command.
      *
-     * @param input The full input string entered by the user
+     * @param input The full input string entered by the user.
+     * @return The chatbot's response as a string.
      */
     public String getResponse(String input) {
         try {
             Command command = Parser.parseCommand(input);
-            String argument = null;
 
             switch (command) {
             case BYE:
                 return ui.showBye();
-
             case LIST:
                 return ui.showTasks(tasks);
-
             case MARK:
-                argument = Parser.parseArgument(input);
-                int markedIndex = Parser.parseTaskNumber(tasks, argument);
-                tasks.get(markedIndex).markAsDone();
-                storage.save(tasks);
-                return ui.showMarkedTask(tasks, markedIndex);
-
+                return handleMark(input);
             case UNMARK:
-                argument = Parser.parseArgument(input);
-                int unmarkedIndex = Parser.parseTaskNumber(tasks, argument);
-                tasks.get(unmarkedIndex).unmarkAsDone();
-                storage.save(tasks);
-                return ui.showUnmarkedTask(tasks, unmarkedIndex);
-
+                return handleUnmark(input);
             case DELETE:
-                argument = Parser.parseArgument(input);
-                int delIndex = Parser.parseTaskNumber(tasks, argument);
-                Task removedTask = tasks.remove(delIndex);
-                storage.save(tasks);
-                return ui.showRemovedTask(tasks, removedTask);
-
+                return handleDelete(input);
             case TODO:
-                argument = Parser.parseArgument(input);
-                tasks.add(Parser.parseTodo(argument));
-                storage.save(tasks);
-                return ui.showAddedTask(tasks);
-
+                return handleAddTodo(input);
             case DEADLINE:
-                argument = Parser.parseArgument(input);
-                tasks.add(Parser.parseDeadline(argument));
-                storage.save(tasks);
-                return ui.showAddedTask(tasks);
-
+                return handleAddDeadline(input);
             case EVENT:
-                argument = Parser.parseArgument(input);
-                tasks.add(Parser.parseEvent(argument));
-                storage.save(tasks);
-                return ui.showAddedTask(tasks);
-
+                return handleAddEvent(input);
             case FIND:
-                argument = Parser.parseArgument(input);
-                TaskList matches = tasks.findByKeyword(argument);
-                return ui.showFoundTasks(matches);
-
+                return handleFind(input);
             default:
                 throw new JayException("unknown command");
             }
         } catch (JayException e) {
             return ui.showError(e.getMessage());
         }
+    }
+
+    /**
+     * Handles marking a task as done.
+     *
+     * @param input The full input string entered by the user.
+     * @return Response message confirming the task has been marked.
+     * @throws JayException If the task number is invalid or parsing fails.
+     */
+    private String handleMark(String input) throws JayException {
+        String argument = Parser.parseArgument(input);
+        int markedIndex = Parser.parseTaskNumber(tasks, argument);
+        tasks.get(markedIndex).markAsDone();
+        storage.save(tasks);
+        return ui.showMarkedTask(tasks, markedIndex);
+    }
+
+    /**
+     * Handles unmarking a task (marking it as not done).
+     *
+     * @param input The full input string entered by the user.
+     * @return Response message confirming the task has been unmarked.
+     * @throws JayException If the task number is invalid or parsing fails.
+     */
+    private String handleUnmark(String input) throws JayException {
+        String argument = Parser.parseArgument(input);
+        int unmarkedIndex = Parser.parseTaskNumber(tasks, argument);
+        tasks.get(unmarkedIndex).unmarkAsDone();
+        storage.save(tasks);
+        return ui.showUnmarkedTask(tasks, unmarkedIndex);
+    }
+
+    /**
+     * Handles deleting a task from the list.
+     *
+     * @param input The full input string entered by the user.
+     * @return Response message confirming the task has been removed.
+     * @throws JayException If the task number is invalid or parsing fails.
+     */
+    private String handleDelete(String input) throws JayException {
+        String argument = Parser.parseArgument(input);
+        int delIndex = Parser.parseTaskNumber(tasks, argument);
+        Task removedTask = tasks.remove(delIndex);
+        storage.save(tasks);
+        return ui.showRemovedTask(tasks, removedTask);
+    }
+
+    /**
+     * Handles adding a new {@code Todo} task.
+     *
+     * @param input The full input string entered by the user.
+     * @return Response message confirming the task has been added.
+     * @throws JayException If parsing fails or the argument is invalid.
+     */
+    private String handleAddTodo(String input) throws JayException {
+        String argument = Parser.parseArgument(input);
+        tasks.add(Parser.parseTodo(argument));
+        storage.save(tasks);
+        return ui.showAddedTask(tasks);
+    }
+
+    /**
+     * Handles adding a new {@code Deadline} task.
+     *
+     * @param input The full input string entered by the user.
+     * @return Response message confirming the task has been added.
+     * @throws JayException If parsing fails or the argument is invalid.
+     */
+    private String handleAddDeadline(String input) throws JayException {
+        String argument = Parser.parseArgument(input);
+        tasks.add(Parser.parseDeadline(argument));
+        storage.save(tasks);
+        return ui.showAddedTask(tasks);
+    }
+
+    /**
+     * Handles adding a new {@code Event} task.
+     *
+     * @param input The full input string entered by the user.
+     * @return Response message confirming the task has been added.
+     * @throws JayException If parsing fails or the argument is invalid.
+     */
+    private String handleAddEvent(String input) throws JayException {
+        String argument = Parser.parseArgument(input);
+        tasks.add(Parser.parseEvent(argument));
+        storage.save(tasks);
+        return ui.showAddedTask(tasks);
+    }
+
+    /**
+     * Handles finding tasks that match a given keyword.
+     *
+     * @param input The full input string entered by the user.
+     * @return Response message containing the list of matching tasks.
+     * @throws JayException If parsing fails or the argument is invalid.
+     */
+    private String handleFind(String input) throws JayException {
+        String argument = Parser.parseArgument(input);
+        TaskList matches = tasks.findByKeyword(argument);
+        return ui.showFoundTasks(matches);
     }
 }
