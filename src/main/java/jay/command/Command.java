@@ -35,7 +35,7 @@ public enum Command {
     }
 
     /**
-     * Resolve a string into a Command.
+     * Resolves the given string into its corresponding {@code Command}.
      *
      * @param word The input string (command keyword or alias).
      * @return The corresponding Command.
