@@ -1,30 +1,51 @@
-# jay User Guide
+# Jay User Guide
 
-// Update the title above to match the actual product name
+![Jay UI](images/Ui.png)
 
-// Product screenshot goes here
+The Jay Chatbot simplifies your everyday life. Manage all your tasks in one app!
 
-// Product intro goes here
+## Adding todos
+
+Format: `/todo <TASK_NAME>`
+
+Example: `todo borrow book`
 
 ## Adding deadlines
 
-// Describe the action and its outcome.
+Format: `deadline <TASK_NAME> /by <DEADLINE_DATE>`
 
-// Give examples of usage
+Example: `deadline return book /by 2019-10-15 1800`
 
-Example: `keyword (optional arguments)`
+## Adding events
 
-// A description of the expected outcome goes here
+Format: `event <TASK_NAME> /from <EVENT_START_DATE> /to <EVENT_END_DATE>`
 
-```
-expected output
-```
+Example: `event project meeting /from 2002-02-02 1800 /to 2020-05-05 0815`
 
-## Feature ABC
+## List tasks
 
-// Feature details
+Format: `list`
 
+## Find tasks
 
-## Feature XYZ
+Format: `find <keyword>`
 
-// Feature details
+Example: `find book`
+
+## Mark/Unmark tasks
+
+Format: `mark/unmark <TASK_NUMBER>`
+
+Example: `mark 1`
+
+Example: `unmark 2`
+
+## Delete tasks
+
+Format: `delete <TASK_NUMBER>`
+
+Example: `mark 1`
+
+## Exit
+
+Format: `bye`
